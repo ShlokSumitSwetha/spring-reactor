@@ -38,6 +38,5 @@ public class TestCreateFluxMono {
 
         // Keep the main thread alive for a while to observe the output
         Thread.sleep(2000);
-
         }
 }
