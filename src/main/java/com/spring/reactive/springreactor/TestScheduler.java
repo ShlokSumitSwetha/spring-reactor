@@ -182,8 +182,5 @@ public class TestScheduler {
                 }).subscribeOn(Schedulers.single()))
                 .sequential()
                 .subscribe();
-
-
-
     }
 }
