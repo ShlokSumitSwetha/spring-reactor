@@ -1,6 +1,8 @@
 package com.spring.reactive.springreactor;
 
 import reactor.core.publisher.Flux;
+
+import java.time.Duration;
 import java.util.concurrent.atomic.AtomicLong;
 
 public class TestGenerate {
@@ -19,16 +21,22 @@ public class TestGenerate {
 
         flux.subscribe(i -> System.out.println(i), error -> System.err.println("Error: " + error));
 
-        Flux<String> flux2 = Flux.generate(
+        Flux<Long> flux2 = Flux.generate(
                 AtomicLong::new,
                 (state, sink) -> {
                     long i = state.getAndIncrement();
-                    sink.next("3 x " + i + " = " + 3*i);
+                    sink.next(i);
                     if (i == 10) sink.complete();
                     return state;
                 });
 
-        flux2.subscribe(i -> System.out.println(i), error -> System.err.println("Error: " + error));
+        flux2.delayElements(Duration.ofMillis(100));
+
+        //flux2.subscribe(i -> System.out.println(i), error -> System.err.println("Error: " + error));
+
+        Flux<Long> flux3 =  Flux.interval(Duration.ofMillis(100))
+                .take(10);
+        flux3.subscribe(i -> System.out.println(i), error -> System.err.println("Error: " + error));
 
     }
 }
